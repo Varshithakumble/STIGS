@@ -1,0 +1,19 @@
+# Define registry path
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the DisableIpSourceRouting value (DWORD)
+Set-ItemProperty -Path $regPath -Name "DisableIpSourceRouting" -Value 2 -Type DWord
+
+# Define binary data for Dhcpv6DUID
+[byte[]]$dhcpv6DUID = 0x00,0x01,0x00,0x01,0x30,0x1c,0x4e,0x8f,0x7c,0x1e,0x52,0xa5,0x70,0xa6
+
+# Set the Dhcpv6DUID value (REG_BINARY)
+Set-ItemProperty -Path $regPath -Name "Dhcpv6DUID" -Value $dhcpv6DUID -Type Binary
+
+# Confirmation output
+Write-Output "Successfully set 'DisableIpSourceRouting' and 'Dhcpv6DUID' under $regPath"
