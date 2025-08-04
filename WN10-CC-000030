@@ -1,0 +1,43 @@
+<#
+
+.SYNOPSIS
+    This PowerShell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
+
+.NOTES
+    Author          : Varshitha K
+    LinkedIn        : linkedin.com/in/varshitha-kumble
+    GitHub          : github.com/Varshithakumble
+    Date Created    : 2025-08-04
+    Last Modified   : 2025-08-04
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000020
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000020).ps1 
+#># Define the registry path
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set 'EnableICMPRedirect' as DWORD with value 0
+Set-ItemProperty -Path $regPath -Name "EnableICMPRedirect" -Value 0 -Type DWord
+
+# Set 'DataBasePath' as REG_EXPAND_SZ
+$databasePath = "%SystemRoot%\System32\drivers\etc"
+Set-ItemProperty -Path $regPath -Name "DataBasePath" -Value $databasePath -Type ExpandString
+
+# Confirmation
+Write-Output "Successfully set 'EnableICMPRedirect' and 'DataBasePath' under $regPath"
