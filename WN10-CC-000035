@@ -1,0 +1,13 @@
+# Define the registry path
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'NoNameReleaseOnDemand' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "NoNameReleaseOnDemand" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'NoNameReleaseOnDemand' to 1 under $regPath"
