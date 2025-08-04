@@ -1,0 +1,13 @@
+# Define the registry path
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'UseLogonCredential' DWORD value to 0
+Set-ItemProperty -Path $regPath -Name "UseLogonCredential" -Value 0 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'UseLogonCredential' to 0 under $regPath"
