@@ -24,7 +24,8 @@
     Put any usage instructions here.
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000030).ps1 
-#># Define the registry path
+#>
+# Define the registry path
 $regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"
 
 # Ensure the registry path exists
