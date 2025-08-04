@@ -1,0 +1,15 @@
+# Define the registry path and value
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Security"
+$valueName = "MaxSize"
+$valueData = 0x000fa000  # Hexadecimal equivalent of 1024000 (in decimal)
+
+# Check if the path exists, if not, create it
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the registry value
+Set-ItemProperty -Path $regPath -Name $valueName -Value $valueData -Type DWord
+
+# Confirm the result
+Write-Output "Registry value 'MaxSize' set to $valueData (hex: 0x000FA000) under $regPath"
