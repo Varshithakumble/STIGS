@@ -1,0 +1,13 @@
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'AllowInsecureGuestAuth' DWORD value to 0
+Set-ItemProperty -Path $regPath -Name "AllowInsecureGuestAuth" -Value 0 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'AllowInsecureGuestAuth' to 0 under $regPath"
