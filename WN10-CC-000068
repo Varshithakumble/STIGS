@@ -1,0 +1,39 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
+
+.NOTES
+    Author          : Varshitha K
+    LinkedIn        : linkedin.com/in/varshitha-kumble
+    GitHub          : github.com/Varshithakumble
+    Date Created    : 2025-08-05
+    Last Modified   : 2025-08-05
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000068
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000068).ps1 
+#>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'AllowProtectedCreds' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "AllowProtectedCreds" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'AllowProtectedCreds' to 1 under $regPath"
