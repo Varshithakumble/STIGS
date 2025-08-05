@@ -1,0 +1,39 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
+
+.NOTES
+    Author          : Varshitha K
+    LinkedIn        : linkedin.com/in/varshitha-kumble
+    GitHub          : github.com/Varshithakumble
+    Date Created    : 2025-08-05
+    Last Modified   : 2025-08-05
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000044
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000044).ps1 
+#>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'NC_ShowSharedAccessUI' DWORD value to 0
+Set-ItemProperty -Path $regPath -Name "NC_ShowSharedAccessUI" -Value 0 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'NC_ShowSharedAccessUI' to 0 under $regPath"
