@@ -1,0 +1,13 @@
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'ProcessCreationIncludeCmdLine_Enabled' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "ProcessCreationIncludeCmdLine_Enabled" -Value 1 -Type DWord
+
+# Confirmation
+Write-Output "Successfully enabled 'ProcessCreationIncludeCmdLine_Enabled' under $regPath"
