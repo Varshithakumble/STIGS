@@ -1,0 +1,13 @@
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'fBlockNonDomain' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "fBlockNonDomain" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'fBlockNonDomain' to 1 under $regPath"
