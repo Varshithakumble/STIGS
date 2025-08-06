@@ -24,3 +24,17 @@
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000235).ps1 
 #>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'PreventOverride' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "PreventOverride" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'PreventOverride' to 1 under $regPath"
+
