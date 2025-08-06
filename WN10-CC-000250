@@ -24,3 +24,16 @@
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000250).ps1 
 #>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'EnabledV9' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "EnabledV9" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'EnabledV9' to 1 under $regPath"
