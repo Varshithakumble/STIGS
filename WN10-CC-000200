@@ -25,3 +25,17 @@
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000200).ps1 
 #>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\CredUI"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'EnumerateAdministrators' DWORD value to 0
+Set-ItemProperty -Path $regPath -Name "EnumerateAdministrators" -Value 0 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'EnumerateAdministrators' to 0 under $regPath"
+
