@@ -24,3 +24,17 @@
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-CC-000238).ps1 
 #>
+# Define the registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Internet Settings"
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the 'PreventCertErrorOverrides' DWORD value to 1
+Set-ItemProperty -Path $regPath -Name "PreventCertErrorOverrides" -Value 1 -Type DWord
+
+# Confirmation output
+Write-Output "Successfully set 'PreventCertErrorOverrides' to 1 under $regPath"
+
